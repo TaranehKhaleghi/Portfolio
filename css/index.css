@@ -1,0 +1,27 @@
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css');
+.navbar-nav.navbar-right:last-child {
+    margin-right: 0;
+}
+
+article#items{
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+article#current {
+    display: block;
+    width: 80%;
+}
+
+img{
+    display: inline-block;
+    width: 100%;
+}
+
+footer{
+    position: relative;
+    background-color: black;
+    color: white;
+    text-align: center;
+}
