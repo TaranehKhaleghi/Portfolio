@@ -4,30 +4,8 @@ import "https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js";
 import aPages from "/pages/index.js";
 import aItems from "/items/index.js";
 
-// class Page {
-//     render(){
-//         console.log("render called on page");
-//     }
-// }
 class Page {
-    constructor(){
-        this.sName = "Taraneh Khaleghi";
-        const sBase = document.location.pathname;
-        if(sBase[sBase.length - 1] == "/"){
-            this.sBase = sBase.substr(0, sBase.length -1);
-        }else{
-            const sFile = '/' + document.location.pathname.split('/').pop();
-            this.sBase = sBase.substr(0, sBase.length - sFile.length); 
-        }
-    }
-    getImageSrc(sImage){
-        if(sImage.match(/\:\/\//)){
-            return sImage;
-        }else{
-            return this.sBase + sImage;
-        }
-    }
-    render() {
+    render(){
         console.log("render called on page");
     }
 }
