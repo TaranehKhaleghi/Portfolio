@@ -27,7 +27,7 @@ class Items extends Page{
         $("article#current").append(`
             <img src="${this.oItems[this.nCurrentItem].specialImage}"/>
         `);
-        $.get(`/items/${this.oItems[this.nCurrentItem].fname}`, (sMarkdown) => {
+        $.get(`/portfolio/items/${this.oItems[this.nCurrentItem].fname}`, (sMarkdown) => {
             $("article#current").append(
                 marked(sMarkdown)
             )
@@ -51,18 +51,17 @@ class Section extends Page {
         this.oOptions = oOptions;
     }
     render() {
-       
-        $.get(`/pages/${this.oOptions.fname}`, (sMarkdown) => {
-            $(`#${this.oOptions.title}`).append(
-                marked(sMarkdown)
-            )
-
-        })
         if (this.oOptions.specialImage) {
             $(`#${this.oOptions.title}`).append(`
             <img src="${this.oOptions.specialImage}" />
             `);
         }
+        $.get(`/portfolio/pages/${this.oOptions.fname}`, (sMarkdown) => {
+            $(`#${this.oOptions.title}`).append(
+                marked(sMarkdown)
+            )
+
+        })
     }
 }
 
@@ -107,7 +106,7 @@ class Nav extends Page {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">Portfolio of ${sName}</a>
+                <a class="navbar-brand" href="index">Portfolio of ${sName}</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
