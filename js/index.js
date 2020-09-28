@@ -5,7 +5,24 @@ import aPages from "../pages/index.js";
 import aItems from "../items/index.js";
 
 class Page {
-    render(){
+    constructor(){
+        this.sName = "Taraneh Khaleghi";
+        const sBase = document.location.pathname;
+        if(sBase[sBase.length - 1] == "/"){
+            this.sBase = sBase.substr(0, sBase.length -1);
+        }else{
+            const sFile = '/' + document.location.pathname.split('/').pop();
+            this.sBase = sBase.substr(0, sBase.length - sFile.length); 
+        }
+    }
+    getImageSrc(sImage){
+        if(sImage.match(/\:\/\//)){
+            return sImage;
+        }else{
+            return this.sBase + sImage;
+        }
+    }
+    render() {
         console.log("render called on page");
     }
 }
@@ -25,19 +42,19 @@ class Items extends Page{
     }
     render(){
         $("article#current").append(`
-            <img src="${this.oItems[this.nCurrentItem].specialImage}"/>
+            <div class="itemImage"><img src="${this.getImageSrc(this.oItems[this.nCurrentItem].specialImage)}" /></div>
         `);
-        $.get(`/portfolio/items/${this.oItems[this.nCurrentItem].fname}`, (sMarkdown) => {
-            $("article#current").append(
-                marked(sMarkdown)
-            )
+        $.get(`${this.sBase}/items/${this.oItems[this.nCurrentItem].fname}`, (sMarkdown) => {
+            $("article#current").append(`
+                <div class="markdownItem">${marked(sMarkdown)}</div>
+            `)
 
         })
         for(let n = 0; n < this.oItems.length; n++){
             if(n != this.nCurrentItem){
                 $("article#items").append(`
                 <div class="item"><a class="itemLink" href="#">
-                <img id="item${n}" src="${this.oItems[n].specialImage}" /></a></div>
+                <img id="item${n}" src="${this.getImageSrc(this.oItems[n].specialImage)}" /></a></div>
                 `);
            }
         }
@@ -53,13 +70,13 @@ class Section extends Page {
     render() {
         if (this.oOptions.specialImage) {
             $(`#${this.oOptions.title}`).append(`
-            <img src="${this.oOptions.specialImage}" />
+            <div class="pageImage"><img src="${this.getImageSrc(this.oOptions.specialImage)}" /></div>
             `);
         }
-        $.get(`/portfolio/pages/${this.oOptions.fname}`, (sMarkdown) => {
-            $(`#${this.oOptions.title}`).append(
-                marked(sMarkdown)
-            )
+        $.get(`${this.sBase}/pages/${this.oOptions.fname}`, (sMarkdown) => {
+            $(`#${this.oOptions.title}`).append(`
+                <div class="markDownPage">${marked(sMarkdown)}</div>
+            `)
 
         })
     }
@@ -76,13 +93,11 @@ class Article extends Page {
     }
 }
 
-const sName = "Taraneh Khaleghi";
-
 class Footer extends Page {
     render() {
         const yToday = new Date().getFullYear();
         $("footer").html(
-            `&copy; ${yToday} ${sName}`
+            `&copy; ${yToday} ${this.sName}`
         );
     }
 }
@@ -106,7 +121,7 @@ class Nav extends Page {
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index">Portfolio of ${sName}</a>
+                <a class="navbar-brand" href="index">Portfolio of ${this.sName}</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -136,7 +151,6 @@ class Portfolio extends Page {
     }
 }
 
-$(document).ready(()=>{
+$(document).ready(() => {
     new Portfolio().render();
 });
-
